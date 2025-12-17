@@ -3,21 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start:server": "node server/grpc_server.js",
+    "start:client": "node client/grpcTestClient.js",
+    "dev": "next dev -p 3001",
+    "check:llm": "node check-llm-config.js",
+    "verify:integration": "node verify-integration.js"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.8.15",
+    "@grpc/proto-loader": "^0.7.9",
+    "axios": "^1.13.2",
+    "cheerio": "^1.1.2",
     "next": "16.0.6",
+    "node-fetch": "^2.6.7",
+    "puppeteer": "^24.31.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "robots-parser": "^3.0.1",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^8.0.1",
     "eslint": "^9",
     "eslint-config-next": "16.0.6",
     "tailwindcss": "^4",

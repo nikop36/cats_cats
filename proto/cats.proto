@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package cats;
+
+// ============ MESSAGES ============
+
+message Empty {}
+
+// Cat data structure
+message Cat {
+  string id = 1;
+  string source = 2;
+  string url = 3;
+  string breed = 4;
+  string info = 5;
+  int64 fetched_at = 6;
+  string name = 7;
+}
+
+// List all cats
+message CatsResponse {
+  repeated Cat cats = 1;
+  int32 total = 2;
+}
+
+// Single cat request/response
+message CatRequest {
+  string id = 1;
+}
+
+message CatReply {
+  Cat cat = 1;
+}
+
+// Breed filter request
+message BreedRequest {
+  string breed = 1;
+}
+
+// Chat message
+message ChatMessage {
+  string from = 1;
+  string text = 2;
+  int64 ts = 3;
+}
+
+// Cat feed update
+message CatUpdate {
+  Cat cat = 1;
+  string event = 2; // 'added', 'updated'
+}
+
+// Add source
+message AddSourceRequest {
+  string name = 1;
+  string url = 2;
+  string type = 3;
+}
+
+message AddSourceResponse {
+  bool ok = 1;
+  string message = 2;
+}
+
+// ============ SERVICE ============
+
+service Cats {
+  // 1.  Unary RPC - list all cats
+  rpc ListCats (Empty) returns (CatsResponse) {}
+  
+  // 2.  Unary RPC - get single cat
+  rpc GetCat (CatRequest) returns (CatReply) {}
+  
+  // 3. Unary RPC - add source
+  rpc AddSource (AddSourceRequest) returns (AddSourceResponse) {}
+  
+  // === STREAMING RPCs ===
+  
+  // 4. Server-side streaming - stream all cats continuously
+  rpc StreamCatFeed (Empty) returns (stream Cat) {}
+  
+  // 5. Server-side streaming - stream cats by breed
+  rpc StreamCatsByBreed (BreedRequest) returns (stream Cat) {}
+  
+  // 6. Server-side streaming - stream only NEW cats as they arrive
+  rpc StreamNewCats (Empty) returns (stream CatUpdate) {}
+  
+  // 7.  Bidirectional streaming - chat about cats
+  rpc CatChat (stream ChatMessage) returns (stream ChatMessage) {}
+}
